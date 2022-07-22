@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+
+//use App\Exports\SiswaExport;
+use App\Imports\rosterImport;
+use Maatwebsite\Excel\Facades\Excel;
+
+use DB;
+use Mail;
+use Illuminate\Support\Facades\Crypt;
+class rosterController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+		public function show(Request $request){
+			if ($request->session()->get('nama') != null){
+				$data['nama'] = $request->session()->get('nama');
+				$data['role'] = $request->session()->get('nama');
+				//dd($data);
+			return view('roster',compact('data'));
+			}else{
+				return redirect('/');
+			}
+
+		}
+		
+		public function import_excel(Request $request) 
+		{
+			// validasi
+			//dd($request);
+			$this->validate($request, [
+				'file' => 'required|mimes:csv,xls,xlsx'
+			]);
+	 
+			// menangkap file excel
+			$file = $request->file('file');
+	 
+			// membuat nama file unik
+			$nama_file = rand().$file->getClientOriginalName();
+			//dd($nama_file);
+			// upload ke folder  file_roster di dalam folder public
+			$file->move( public_path('/file_roster/'.$nama_file));
+			
+			// import data
+			Excel::import(new rosterimport, public_path('file_roster/'.$nama_file));
+	 
+			// notifikasi dengan session
+			Session::flash('sukses','Data Roster Berhasil Diimport!');
+	 
+			// alihkan halaman kembali
+			return redirect('/roster');
+		}
+}
+
