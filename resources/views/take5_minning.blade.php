@@ -111,6 +111,11 @@
 												</td>
 												@if ($datas1->kategori == 'Buat Perubahan' )
 												<td colspan='3'></td>
+										</tbody>
+										</table>
+										<table class="table table-bordered table-hover" >
+												
+										<tbody>
 													<tr bgcolor="red" style="color: white;" >
 														<td ><b>Jenis Atau Nomor Bahaya</b></td>
 														<td colspan='4'><b>Pengendalian</b></td>
@@ -145,6 +150,9 @@
 														<td  colspan='4'><input class='form-control'></td>
 														
 													</tr>
+										</tbody>
+										</table>
+										<table class="table table-striped table-bordered table-hover dataTables-example" >
 												@elseif ($datas2->item == 'Jam Berapa')
 												<td  colspan='3'><input type="time" class="form-control" ></td>
 												@elseif ($datas2->item == '-')
